@@ -1,7 +1,7 @@
 {
   "name": "referrd-widget-react",
   "private": false,
-  "version": "1.1.1",
+  "version": "1.1.2",
   "type": "module",
   "main": "dist/index.umd.js",
   "module": "dist/index.es.js",
@@ -15,6 +15,10 @@
   "files": [
     "/dist"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AvinashPatel15/referrd-widget-react.git"
+  },
   "publishConfig": {
     "access": "public"
   },
