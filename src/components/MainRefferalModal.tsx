@@ -191,7 +191,7 @@ export const MainRefferalModal = () => {
   useEffect(() => {
     // Fetch data only if pathname exists
     if (pathname) {
-      if (payment_success !== undefined && payment_success === "true") {
+      if (payment_success !== undefined && (payment_success)?.toString() === "true") {
         getRefferalModaldata();
       }
     }
