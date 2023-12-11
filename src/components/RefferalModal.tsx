@@ -10,7 +10,6 @@ import React, {
   useState,
 } from "react";
 import Toast from "./Toast";
-import "./refferalmodal.css";
 
 interface ReferralModalProps {
   refferalModal: any;
@@ -39,7 +38,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   // State to manage the step of the modal (registration form or referral link sharing)
-  const [modalStep, setModalStep] = useState(2);
+  const [modalStep, setModalStep] = useState(1);
 
   // State to manage form data for user registration
   const [formData, setFormData] = useState({
@@ -281,10 +280,10 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
             display: "flex",
             flexDirection: "column",
             gap: "0.5rem",
+            width: "45%",
             // "@media (min-width: 768px)": { width: "70%" },
             // "@media (min-width: 1280px)": { width: "40%" },
           }}
-          className="r_modal"
         >
           {/* Close Button */}
           {/* <div className="w-full flex justify-end"> */}
@@ -332,24 +331,28 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               }`,
               borderRadius: "0.125rem",
               width: "100%",
+              height: "350px",
             }}
-            className="r_modal_body"
             // className={`w-full rounded-sm h-[600px] md:h-[350px]`}
           >
             {/* modal body div 1 */}
             {/* <div className="w-full h-full flex flex-col md:flex-row"> */}
             <div
               style={{
+                display: "flex",
+                flexDirection: "row",
                 width: "100%",
                 height: "100%",
-                alignItems: `${modalStep === 1 ? "center" : ""}`,
-                justifyContent: `${modalStep === 1 ? "center" : ""}`,
               }}
-              className="r_modal_body_div_one"
             >
               {/* Modal Image */}
               {/* <div className="h-[30%] md:h-full w-full md:w-[50%]"> */}
-              <div className="modal_body_img">
+              <div
+                style={{
+                  width: "100%",
+                  height: "100%",
+                }}
+              >
                 {/* <div className="h-full relative"> */}
                 <div style={{ height: "100%", position: "relative" }}>
                   <img
@@ -375,8 +378,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                       fontSize: "25px",
                       color: "#ffffff",
                       top: "20%",
+                      overflow: "hidden",
+                      display: "-webkit-box",
+                      WebkitLineClamp: 3,
+                      WebkitBoxOrient: "vertical",
                     }}
-                    className="img_text"
                   >
                     {refferalModalData?.campaign_widget_text
                       ? refferalModalData?.campaign_widget_text
@@ -389,12 +395,13 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               {/* <div className="p-4 h-[70%] md:h-full w-full md:w-[50%] flex justify-center items-center"> */}
               <div
                 style={{
+                  width: "100%",
+                  height: "100%",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   padding: "1rem",
                 }}
-                className="form_div"
               >
                 {modalStep === 1 && (
                   <form
@@ -785,7 +792,6 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           flexDirection: "column",
                           justifyContent: "space-between",
                           alignItems: "center",
-                          // gap:"10px",
                           width: "100%",
                           height: "100%",
                         }}
