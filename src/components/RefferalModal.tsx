@@ -47,6 +47,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
     email: "",
     password: "db5ccca4-f6dd-4217-8df4-0bb237f1a543",
     mobile: "",
+    is_signup: false,
     role: "2f9b699f-fbe3-48b8-8cf6-6726f9a32a55",
   });
 

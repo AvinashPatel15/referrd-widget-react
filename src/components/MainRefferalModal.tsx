@@ -111,7 +111,8 @@ export const MainRefferalModal = () => {
         type: value.event_type || "pageview",
         url: location.href || null,
         uuid: null,
-        user: value.campaign.user_created || null,
+        // user: value.campaign.user_created || null,
+        user: null,
       };
     } else if (action === "track" && value.event_type === "conversion") {
       payload = {
