@@ -219,8 +219,12 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
           console.log(error);
         }
       } else {
+        if (response.status === 400) {
+          showToastWithMessage("Already signed up!", "warning");
+        } else {
+          showToastWithMessage("Registration failed!", "error");
+        }
         console.error("Registration failed!");
-        showToastWithMessage("Registration failed!", "error");
       }
 
       console.log(formData);
@@ -331,7 +335,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               }`,
               borderRadius: "0.125rem",
               width: "100%",
-              height: "350px",
+              height: "380px",
             }}
             // className={`w-full rounded-sm h-[600px] md:h-[350px]`}
           >

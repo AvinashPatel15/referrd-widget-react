@@ -158,7 +158,7 @@ export const MainRefferalModal = () => {
     try {
       const response = await fetch(
         // `https://api.referrd.agpro.co.in/items/campaigns?filter[url][_eq]=`,
-        `${BASE_URL}/items/campaigns?filter[url][_eq]=${pathname}`,
+        `${BASE_URL}/items/campaigns?filter={"_and":[{"url":{"_eq":"${pathname}"}},{"status":{"_eq":"active"}},{"date_start":{"_lt":"$NOW"}},{"date_close":{"_gt":"$NOW"}}]}`,
         {
           method: "GET",
           headers: {
@@ -191,7 +191,10 @@ export const MainRefferalModal = () => {
   useEffect(() => {
     // Fetch data only if pathname exists
     if (pathname) {
-      if (payment_success !== undefined && (payment_success)?.toString() === "true") {
+      if (
+        payment_success !== undefined &&
+        payment_success?.toString() === "true"
+      ) {
         getRefferalModaldata();
       }
     }
