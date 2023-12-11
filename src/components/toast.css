@@ -1,0 +1,25 @@
+.toast {
+  padding: 6px 15px;
+  font-size: 14px;
+  border-radius: 5px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: center;
+}
+
+.toast.default {
+  background-color: #00b5ff !important;
+}
+
+.toast.success {
+  background-color: #00a96e !important;
+}
+
+.toast.error {
+  background-color: #e74c3c !important;
+}
+
+.toast.warning {
+  background-color: #f1c40f !important;
+}

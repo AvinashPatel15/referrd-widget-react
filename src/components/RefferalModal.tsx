@@ -2,9 +2,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+import Toast from "./Toast";
+import "./refferalmodal.css";
 
 interface ReferralModalProps {
   refferalModal: any;
@@ -15,6 +21,12 @@ interface ReferralModalProps {
   referrd_uuid: any;
 }
 
+interface Toast {
+  id: number;
+  message: string;
+  type: "success" | "error" | "warning" | "default";
+}
+
 const RefferalModal: React.FC<ReferralModalProps> = ({
   refferalModal,
   setRefferalModal,
@@ -23,8 +35,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
   referrd_referral,
   referrd_uuid,
 }) => {
+  // State to manage toasts
+  const [toasts, setToasts] = useState<Toast[]>([]);
+
   // State to manage the step of the modal (registration form or referral link sharing)
-  const [modalStep, setModalStep] = useState(1);
+  const [modalStep, setModalStep] = useState(2);
 
   // State to manage form data for user registration
   const [formData, setFormData] = useState({
@@ -55,14 +70,46 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
   const Message = "Use my referral link ";
 
+  const showToastWithMessage = (
+    message: string,
+    type: "success" | "error" | "warning" | "default"
+  ) => {
+    const newToast: Toast = {
+      id: Date.now(),
+      message,
+      type,
+    };
+
+    setToasts((prevToasts) => [...prevToasts, newToast]);
+
+    setTimeout(() => {
+      hideToast(newToast.id);
+    }, 2000); // Auto hide after 2 seconds
+  };
+
+  const hideToast = (id: number) => {
+    setToasts((prevToasts) => prevToasts.filter((toast) => toast.id !== id));
+  };
+
+  useEffect(() => {
+    toasts.forEach((toast) => {
+      const timer = setTimeout(() => {
+        hideToast(toast.id);
+      }, 2000); // Auto hide after 2 seconds
+
+      return () => clearTimeout(timer);
+    });
+  }, [toasts]);
+
   // Function to copy text to clipboard
   const copyText = async () => {
     try {
       await navigator.clipboard.writeText(inputRef.current?.value || "");
       console.log("Link Copied!");
-      toast.success("Link copied!", { autoClose: 1500 });
+      showToastWithMessage("Link copied!", "success");
     } catch (err) {
       console.error("Copy failed:", err);
+      showToastWithMessage("Copy failed", "error");
     }
   };
 
@@ -114,6 +161,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
     e.preventDefault();
 
     if (!validateForm()) {
+      showToastWithMessage("Please fill all inputs!", "warning");
       return;
     }
 
@@ -134,6 +182,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
       if (response.ok) {
         console.log("Registration successful!");
+        showToastWithMessage("Registration successful!", "success");
         if (referrd_referral && referrd_uuid) {
           rfrd("track", {
             event_type: "conversion",
@@ -141,8 +190,6 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
             campaign: refferalModalData,
           });
         }
-
-        toast.success("Registration successful!", { autoClose: 1500 });
         // Refferal Create API
         try {
           const referralResponse = await fetch(`${BASE_URL}/items/referrals`, {
@@ -161,28 +208,27 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
           if (referralResponse.ok) {
             console.log("Referral created successfully!");
-            toast.success("Referral created successfully!", {
-              autoClose: 1500,
-            });
+            showToastWithMessage("Referral created successfully!", "success");
 
             setRefferalSlug(referralData.data.slug);
             setModalStep(2);
           } else {
             console.error("Failed to create referral!");
-            toast.error("Failed to create referral!", { autoClose: 1500 });
+            showToastWithMessage("Failed to create referral!", "error");
           }
         } catch (error) {
           console.log(error);
         }
       } else {
         console.error("Registration failed!");
-        toast.error("Registration failed!", { autoClose: 1500 });
+        showToastWithMessage("Registration failed!", "error");
       }
 
       console.log(formData);
       console.log(response);
     } catch (error) {
       console.log("Error occurred while sending the request", error);
+      showToastWithMessage("Something went wrong!", "error");
     }
   };
 
@@ -196,7 +242,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
       <div
         style={{
           width: "100%",
-          height: "100%",
+          height: "100vh",
           backgroundColor: "rgba(0, 0, 0, 0.7)",
           display: `${refferalModal ? "flex" : "none"}`,
           justifyContent: "center",
@@ -206,9 +252,28 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
           right: "0",
           bottom: "0",
           left: "0",
+          border: "1px solid blue",
         }}
       >
-        <ToastContainer />
+        {/* Toast */}
+        <div
+          style={{
+            position: "fixed",
+            top: "5px",
+            left: "50%",
+            transform: "translateX(-50%)",
+            zIndex: "100",
+            display: "flex",
+            flexDirection: "column",
+            gap: "3px",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {toasts.map((toast) => (
+            <Toast key={toast.id} message={toast.message} type={toast.type} />
+          ))}
+        </div>
         {/* Modal */}
         {/* <div className="flex flex-col gap-2 w-[95%] md:w-[70%] xl:w-[40%]"> */}
         <div
@@ -216,10 +281,10 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
             display: "flex",
             flexDirection: "column",
             gap: "0.5rem",
-            width: "45%",
             // "@media (min-width: 768px)": { width: "70%" },
             // "@media (min-width: 1280px)": { width: "40%" },
           }}
+          className="r_modal"
         >
           {/* Close Button */}
           {/* <div className="w-full flex justify-end"> */}
@@ -267,27 +332,22 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               }`,
               borderRadius: "0.125rem",
               width: "100%",
-              height: "400px",
             }}
+            className="r_modal_body"
             // className={`w-full rounded-sm h-[600px] md:h-[350px]`}
           >
+            {/* modal body div 1 */}
             {/* <div className="w-full h-full flex flex-col md:flex-row"> */}
             <div
               style={{
-                display: "flex",
-                flexDirection: "row",
                 width: "100%",
                 height: "100%",
               }}
+              className="r_modal_body_div_one"
             >
               {/* Modal Image */}
               {/* <div className="h-[30%] md:h-full w-full md:w-[50%]"> */}
-              <div
-                style={{
-                  width: "100%",
-                  height: "100%",
-                }}
-              >
+              <div className="modal_body_img">
                 {/* <div className="h-full relative"> */}
                 <div style={{ height: "100%", position: "relative" }}>
                   <img
@@ -297,11 +357,12 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                         : `https://wallpapercave.com/dwp1x/wp8572585.jpg`
                     }
                     width="100%"
-                    // className="h-full object-cover object-center brightness-[0.7]"
+                    // className="h-full object-cover object-center brightness-50"
                     style={{
                       objectFit: "cover",
                       objectPosition: "center",
                       height: "100%",
+                      filter: "brightness(0.6)",
                     }}
                   />
                   {/* <h1 className="absolute left-2 top-[20%] text-white text-4xl"> */}
@@ -326,13 +387,12 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               {/* <div className="p-4 h-[70%] md:h-full w-full md:w-[50%] flex justify-center items-center"> */}
               <div
                 style={{
-                  width: "100%",
-                  height: "100%",
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
                   padding: "1rem",
                 }}
+                className="form_div"
               >
                 {modalStep === 1 && (
                   <form
@@ -816,7 +876,14 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
                         </div>
 
-                        <div className="w-full flex items-center justify-between">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
                           <a
                             href={`https://api.whatsapp.com/send?text=${`${Message}${ReferralURL}/${refferalSlug}&platform=whatsapp`}`}
                             target="_blank"
@@ -842,17 +909,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                             </div>
                           </a>
 
-                          {/* <Mail
-                            style={{
-                              borderRadius: "50%",
-                              padding: "15px",
-                              backgroundColor: "#ea4335",
-                            }}
-                            solid
-                            small
-                            subject="Use my referral link"
-                            link={`${ReferralURL}/${refferalSlug}&platform=email`}
-                          /> */}
+                          {/* Mail */}
 
                           <a
                             href={`mailto:?subject=${Message}&body=${`${ReferralURL}/${refferalSlug}&platform=email`}`}
@@ -917,7 +974,14 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
                         </div>
 
-                        <div className="w-full flex items-center justify-between">
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            width: "100%",
+                          }}
+                        >
                           {/* Pinterest */}
                           <a
                             href={`https://in.pinterest.com/pin-builder/?description=${Message}&media=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}&method=button&url=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}`}
