@@ -19,6 +19,17 @@
 .form_div {
   width: 100%;
   height: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+
+.img_text {
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -36,7 +47,7 @@
   }
 
   .r_modal_body {
-    height: 400px;
+    height: 350px;
   }
 
   .r_modal_body_div_one {
@@ -45,7 +56,7 @@
 
   .modal_body_img {
     height: 100%;
-    width: 50%;
+    width: 70%;
   }
 
   .form_div {

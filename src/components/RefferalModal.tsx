@@ -39,7 +39,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   // State to manage the step of the modal (registration form or referral link sharing)
-  const [modalStep, setModalStep] = useState(1);
+  const [modalStep, setModalStep] = useState(2);
 
   // State to manage form data for user registration
   const [formData, setFormData] = useState({
@@ -239,6 +239,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
           refferalModal ? "flex" : "none"
         } justify-center items-center h-full w-full bg-black bg-opacity-70 fixed inset-0 z-[100]`}
       > */}
+
       <div
         style={{
           width: "100%",
@@ -252,7 +253,6 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
           right: "0",
           bottom: "0",
           left: "0",
-          border: "1px solid blue",
         }}
       >
         {/* Toast */}
@@ -342,6 +342,8 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
               style={{
                 width: "100%",
                 height: "100%",
+                alignItems: `${modalStep === 1 ? "center" : ""}`,
+                justifyContent: `${modalStep === 1 ? "center" : ""}`,
               }}
               className="r_modal_body_div_one"
             >
@@ -370,11 +372,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                     style={{
                       position: "absolute",
                       left: "0.5rem",
-                      fontSize: "2.25rem",
-                      lineHeight: "2.5rem",
+                      fontSize: "25px",
                       color: "#ffffff",
                       top: "20%",
                     }}
+                    className="img_text"
                   >
                     {refferalModalData?.campaign_widget_text
                       ? refferalModalData?.campaign_widget_text
@@ -804,7 +806,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#3b5998",
                               }}
@@ -830,7 +836,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#e5e7eb",
                               }}
@@ -856,7 +866,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#55acee",
                               }}
@@ -876,6 +890,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
                         </div>
 
+                        {/* Whatsapp */}
                         <div
                           style={{
                             display: "flex",
@@ -890,7 +905,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#25d366",
                               }}
@@ -910,14 +929,17 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
 
                           {/* Mail */}
-
                           <a
                             href={`mailto:?subject=${Message}&body=${`${ReferralURL}/${refferalSlug}&platform=email`}`}
                             target="_blank"
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#ea4335",
                               }}
@@ -947,14 +969,17 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
 
                           {/* Reddit */}
-
                           <a
                             href={`https://www.reddit.com/submit/?url=${`${ReferralURL}/${refferalSlug}&platform=reddit`}&title=${Message}`}
                             target="_blank"
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#5f99cf",
                               }}
@@ -974,6 +999,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           </a>
                         </div>
 
+                        {/* Pinterest */}
                         <div
                           style={{
                             display: "flex",
@@ -982,14 +1008,17 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                             width: "100%",
                           }}
                         >
-                          {/* Pinterest */}
                           <a
                             href={`https://in.pinterest.com/pin-builder/?description=${Message}&media=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}&method=button&url=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}`}
                             target="_blank"
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#bd081c",
                               }}
@@ -1007,13 +1036,26 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                               </svg>
                             </div>
                           </a>
+
                           {/* SMS */}
                           <a
                             href={`sms:?body=${`Use my referral link ${ReferralURL}/${refferalSlug}&platform=sms`}`}
                             target="_blank"
                           >
-                            <div className="p-[14px] rounded-[50%] bg-[#e5e7eb]">
+                            <div
+                              style={{
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
+                                borderRadius: "50%",
+                                backgroundColor: "#e5e7eb",
+                              }}
+                            >
                               <svg
+                                width="24"
+                                height="24"
                                 viewBox="0 0 512 512"
                                 fill="currentColor"
                                 aria-hidden="true"
@@ -1023,6 +1065,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                               </svg>
                             </div>
                           </a>
+
                           {/* Linkedin */}
                           <a
                             href={`https://www.linkedin.com/sharing/share-offsite/?url=${`${ReferralURL}/${refferalSlug}&platform=linkedin`}`}
@@ -1030,7 +1073,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           >
                             <div
                               style={{
-                                padding: "14px",
+                                width: "45px",
+                                height: "45px",
+                                display: "flex",
+                                alignItems: "center",
+                                justifyContent: "center",
                                 borderRadius: "50%",
                                 background: "#0077b5",
                               }}

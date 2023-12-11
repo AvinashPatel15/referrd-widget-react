@@ -9,17 +9,17 @@
 }
 
 .toast.default {
-  background-color: #00b5ff !important;
+  background-color: #00b5ff;
 }
 
 .toast.success {
-  background-color: #00a96e !important;
+  background-color: #00a96e;
 }
 
 .toast.error {
-  background-color: #e74c3c !important;
+  background-color: #e74c3c;
 }
 
 .toast.warning {
-  background-color: #f1c40f !important;
+  background-color: #f1c40f;
 }
