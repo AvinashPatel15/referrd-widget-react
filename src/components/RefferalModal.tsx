@@ -116,10 +116,17 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
   // Function to handle input changes in the registration form
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+    if (name === "mobile") {
+      setFormData({
+        ...formData,
+        [name]: "+" + value.split("+")[value.split("+").length - 1],
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
   };
 
   // Function to validate the registration form
@@ -147,6 +154,11 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
       valid = false;
     }
 
+    if (formData.mobile.length !== 13) {
+      newErrors.mobile = "Mobile number length should be 13 number";
+      valid = false;
+    }
+
     if (!isChecked) {
       newErrors.checkbox = "Please accept the terms and conditions";
       valid = false;
@@ -166,6 +178,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
     }
 
     // User Create API
+
     try {
       const response = await fetch(`${BASE_URL}/users`, {
         method: "POST",
@@ -596,6 +609,8 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           name="mobile"
                           value={formData.mobile}
                           onChange={handleInputChange}
+                          minLength={13}
+                          maxLength={13}
                           // className={`block w-full rounded-md border-1 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset  placeholder:text-gray-400 sm:text-sm sm:leading-6 ${
                           //   errors.mobile ? "ring-red-500" : "ring-gray-300"
                           // }`}
@@ -812,7 +827,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                         >
                           {/* Facebook */}
                           <a
-                            href={`https://www.facebook.com/sharer/sharer.php?u=${ReferralURL}/${refferalSlug}&platform=facebook`}
+                            href={`https://www.facebook.com/sharer/sharer.php?u=${ReferralURL}/${refferalSlug}%26platform=facebook`}
                             target="_blank"
                           >
                             <div
@@ -842,7 +857,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* Messenger */}
                           <a
-                            href={`fb-messenger://share/?link=${`${ReferralURL}/${refferalSlug}&platform=messenger`}`}
+                            href={`fb-messenger://share/?link=${`${ReferralURL}/${refferalSlug}%26platform=messenger`}`}
                             target="_blank"
                           >
                             <div
@@ -872,7 +887,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* Twitter */}
                           <a
-                            href={`https://twitter.com/intent/tweet/?text=${Message}&url=${ReferralURL}/${refferalSlug}&platform=twitter`}
+                            href={`https://twitter.com/intent/tweet/?text=${Message}&url=${ReferralURL}/${refferalSlug}%26platform=twitter`}
                             target="_blank"
                           >
                             <div
@@ -911,7 +926,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           }}
                         >
                           <a
-                            href={`https://api.whatsapp.com/send?text=${`${Message}${ReferralURL}/${refferalSlug}&platform=whatsapp`}`}
+                            href={`https://api.whatsapp.com/send?text=${Message}${ReferralURL}/${refferalSlug}%26platform=whatsapp`}
                             target="_blank"
                           >
                             <div
@@ -941,7 +956,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* Mail */}
                           <a
-                            href={`mailto:?subject=${Message}&body=${`${ReferralURL}/${refferalSlug}&platform=email`}`}
+                            href={`mailto:?subject=${Message}&body=${`${ReferralURL}/${refferalSlug}%26platform=email`}`}
                             target="_blank"
                           >
                             <div
@@ -981,7 +996,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* Reddit */}
                           <a
-                            href={`https://www.reddit.com/submit/?url=${`${ReferralURL}/${refferalSlug}&platform=reddit`}&title=${Message}`}
+                            href={`https://www.reddit.com/submit/?url=${`${ReferralURL}/${refferalSlug}%26platform=reddit`}&title=${Message}`}
                             target="_blank"
                           >
                             <div
@@ -1020,7 +1035,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
                           }}
                         >
                           <a
-                            href={`https://in.pinterest.com/pin-builder/?description=${Message}&media=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}&method=button&url=${`${ReferralURL}/${refferalSlug}&platform=pinterest`}`}
+                            href={`https://in.pinterest.com/pin-builder/?description=${Message}&media=${`${ReferralURL}/${refferalSlug}%26platform=pinterest`}&method=button&url=${`${ReferralURL}/${refferalSlug}%26platform=pinterest`}`}
                             target="_blank"
                           >
                             <div
@@ -1050,7 +1065,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* SMS */}
                           <a
-                            href={`sms:?body=${`Use my referral link ${ReferralURL}/${refferalSlug}&platform=sms`}`}
+                            href={`sms:?body=${`Use my referral link ${ReferralURL}/${refferalSlug}%26platform=sms`}`}
                             target="_blank"
                           >
                             <div
@@ -1079,7 +1094,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
 
                           {/* Linkedin */}
                           <a
-                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${`${ReferralURL}/${refferalSlug}&platform=linkedin`}`}
+                            href={`https://www.linkedin.com/sharing/share-offsite/?url=${`${ReferralURL}/${refferalSlug}%26platform=linkedin`}`}
                             target="_blank"
                           >
                             <div
