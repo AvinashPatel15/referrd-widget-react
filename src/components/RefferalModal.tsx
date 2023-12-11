@@ -39,7 +39,7 @@ const RefferalModal: React.FC<ReferralModalProps> = ({
   const [toasts, setToasts] = useState<Toast[]>([]);
 
   // State to manage the step of the modal (registration form or referral link sharing)
-  const [modalStep, setModalStep] = useState(2);
+  const [modalStep, setModalStep] = useState(1);
 
   // State to manage form data for user registration
   const [formData, setFormData] = useState({
