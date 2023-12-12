@@ -35,11 +35,13 @@ export const MainRefferalModal = () => {
   const referrd_referral = urlParams?.get("referrd_referral") || null;
   const referrd_uuid = urlParams?.get("referrd_uuid") || null;
   const payment_success = urlParams?.get("payment_success") || null;
+  const social_platform = urlParams?.get("platform") || null;
 
   // Log referral parameters for debugging
   console.log("referrd_referral", referrd_referral);
   console.log("referrd_uuid", referrd_uuid);
   console.log("payment_success", payment_success);
+  console.log("social_platform", social_platform);
 
   //   Import BASE_URL
   const BASE_URL = "https://api.referrd.com.au";
@@ -85,7 +87,7 @@ export const MainRefferalModal = () => {
   // Function to send event data to the API
   async function rfrd(
     action: string,
-    value: { event_type: any; campaign: any; user?: any }
+    value: { event_type: any; campaign: any; user?: any; social_type?: any }
   ) {
     let payload;
 
@@ -109,6 +111,7 @@ export const MainRefferalModal = () => {
         transaction_id: null,
         transaction_value: null,
         type: value.event_type || "pageview",
+        social_tye: value.social_type || null,
         url: location.href || null,
         uuid: null,
         // user: value.campaign.user_created || null,
@@ -126,6 +129,7 @@ export const MainRefferalModal = () => {
         transaction_id: null,
         transaction_value: null,
         type: value.event_type || "conversion",
+        social_tye: value.social_type || null,
         url: location.href || null,
         uuid: referrd_uuid || null,
         user: value.user.id || null,
@@ -177,6 +181,7 @@ export const MainRefferalModal = () => {
           rfrd("track", {
             event_type: "pageview",
             campaign: data,
+            social_type:social_platform
           });
         }
       } else {
