@@ -13,7 +13,7 @@ export const MainRefferalModal = () => {
     pathname = window.location.origin + window.location.pathname;
   }
 
-  console.log("pathname", pathname);
+  // console.log("pathname", pathname);
 
   // State to manage the visibility of the referral modal
   const [refferalModal, setRefferalModal] = useState(false);
@@ -38,14 +38,14 @@ export const MainRefferalModal = () => {
   const social_platform = urlParams?.get("platform") || null;
 
   // Log referral parameters for debugging
-  console.log("referrd_referral", referrd_referral);
-  console.log("referrd_uuid", referrd_uuid);
-  console.log("payment_success", payment_success);
-  console.log("social_platform", social_platform);
+  // console.log("referrd_referral", referrd_referral);
+  // console.log("referrd_uuid", referrd_uuid);
+  // console.log("payment_success", payment_success);
+  // console.log("social_platform", social_platform);
 
   //   Import BASE_URL
   const BASE_URL = "https://api.referrd.com.au";
-  console.log(BASE_URL);
+  // console.log(BASE_URL);
 
   // Function to fetch referral ID based on referral code
   async function getReferralIdData() {
@@ -63,8 +63,8 @@ export const MainRefferalModal = () => {
       const referralResult = await response.json();
       const referralData = referralResult?.data[0];
       setReferralID(referralData.id);
-      console.log(referralData.id);
-      console.log(referralID);
+      // console.log(referralData.id);
+      // console.log(referralID);
       return referralData.id;
     } catch (error) {
       console.log(error);
@@ -111,7 +111,7 @@ export const MainRefferalModal = () => {
         transaction_id: null,
         transaction_value: null,
         type: value.event_type || "pageview",
-        social_tye: value.social_type || null,
+        social_type: value.social_type || null,
         url: location.href || null,
         uuid: null,
         // user: value.campaign.user_created || null,
@@ -129,14 +129,14 @@ export const MainRefferalModal = () => {
         transaction_id: null,
         transaction_value: null,
         type: value.event_type || "conversion",
-        social_tye: value.social_type || null,
+        social_type: value.social_type || null,
         url: location.href || null,
         uuid: referrd_uuid || null,
         user: value.user.id || null,
       };
     }
 
-    console.log(payload);
+    // console.log(payload);
 
     // Send payload to the API
     try {
@@ -181,7 +181,7 @@ export const MainRefferalModal = () => {
           rfrd("track", {
             event_type: "pageview",
             campaign: data,
-            social_type:social_platform
+            social_type: social_platform
           });
         }
       } else {
@@ -191,8 +191,6 @@ export const MainRefferalModal = () => {
       console.error("Error fetching data:", error);
     }
   };
-
-  console.log(refferalModalData);
 
   useEffect(() => {
     // Fetch data only if pathname exists
