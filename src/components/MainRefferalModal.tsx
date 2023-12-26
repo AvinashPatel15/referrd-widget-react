@@ -5,13 +5,13 @@
 import { useState, useEffect } from "react";
 import RefferalModal from "./RefferalModal";
 
-export const MainRefferalModal = () => {
+export const MainRefferalModal = ({ url }: { url: any }) => {
   // Getting Pathname
-  let pathname: unknown;
+  const pathname = url || "";
 
-  if (typeof window !== "undefined") {
-    pathname = window.location.origin + window.location.pathname;
-  }
+  // if (typeof window !== "undefined") {
+  //   pathname = window.location.origin + window.location.pathname;
+  // }
 
   // console.log("pathname", pathname);
 
@@ -163,7 +163,8 @@ export const MainRefferalModal = () => {
     try {
       const response = await fetch(
         // `https://api.referrd.agpro.co.in/items/campaigns?filter[url][_eq]=`,
-        `${BASE_URL}/items/campaigns?filter={"_and":[{"url":{"_eq":"${pathname}"}},{"status":{"_eq":"active"}},{"date_start":{"_lt":"$NOW"}},{"date_close":{"_gt":"$NOW"}}]}`,
+        // `${BASE_URL}/items/campaigns?filter={"_and":[{"url":{"_eq":"${pathname}"}},{"status":{"_eq":"active"}},{"date_start":{"_lt":"$NOW"}},{"date_close":{"_gt":"$NOW"}}]}`,
+        `${BASE_URL}/items/campaigns?filter[url][_eq]=${pathname}`,
         {
           method: "GET",
           headers: {
@@ -181,7 +182,7 @@ export const MainRefferalModal = () => {
           rfrd("track", {
             event_type: "pageview",
             campaign: data,
-            social_type: social_platform
+            social_type: social_platform,
           });
         }
       } else {
